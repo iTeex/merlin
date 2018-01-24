@@ -1,0 +1,49 @@
+body {
+    background-color: #000;
+    margin: 0;
+}
+
+.rsc-container {
+    background: transparent;
+    border-radius: 0;
+    margin: 10px auto;
+}
+
+.rsc-content {
+    margin-top: 0;
+    height: calc(100vh - 80px);
+}
+
+.rsc-content .rsc-ts {
+    justify-content: center;
+    align-items: center;
+}
+
+.rsc-content .rsc-ts .rsc-ts-image-container {
+    display: none;
+}
+
+.rsc-content .rsc-ts .rsc-ts-bubble {
+    background: transparent;
+    font-size: 18px;
+    color: #fff;
+}
+
+.rsc-content .rsc-ts:nth-child(odd) .rsc-ts-bubble {
+    color: #1cb4ff;
+}
+
+.rsc-content .rsc-cs {
+    background: transparent;
+    font-size: 18px;
+    color: #1cb4ff;
+}
+
+.rsc-footer input {
+    background: transparent;
+    border-top: 0;
+    border-bottom: 1px solid #eee;
+    border-radius: 0;
+    font-size: 18px;
+    color: #fff;
+}
