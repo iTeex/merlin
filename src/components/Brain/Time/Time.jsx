@@ -27,9 +27,9 @@ export default Time;
 
 
 Time.propTypes = {
-    steps: PropTypes.object
+    props: PropTypes.object
 };
 
 Time.defaultProps = {
-    steps: undefined
+    props: undefined
 };

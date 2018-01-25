@@ -1,39 +1,49 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Loading } from 'react-simple-chatbot';
+
+import { ucfirst } from '../../../utils';
+import Mouth from '../../Mouth/Mouth';
 
 class Weather extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            result: ''
+            loading: true,
+            tone: ''
         };
     }
 
     componentWillMount() {
-        navigator.geolocation.getCurrentPosition(this.getWeather);
-    }
-
-    getWeather(position) {
-        fetch('http://api.openweathermap.org/data/2.5/weather?lat=' + position.coords.latitude + '&lon=' + position.coords.longitude + '&APPID=01aea968f8f3cff49d0a33334e36f491')
-            .then(res => console.log(res))
+        fetch('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props) + '&appid=01aea968f8f3cff49d0a33334e36f491')
+            .then(res => res.json())
+            .then(res => {
+                if ("rain" in res) {
+                    console.log(res)
+                    this.setState({tone: "positive", loading: false})
+                } else {
+                    this.setState({tone: "negative", loading: false})
+                }
+            })
     }
 
     render() {
+        const loading = this.state.loading;
+
         return (
             <div>
-                It is { this.state.result }
+                { loading ? <Loading /> : <Mouth tone={this.state.tone}/> }
             </div>
         );
     }
 }
 export default Weather;
 
-
 Weather.propTypes = {
-    steps: PropTypes.object
+    props: PropTypes.string
 };
 
 Weather.defaultProps = {
-    steps: undefined
+    props: undefined
 };

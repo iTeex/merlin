@@ -11,7 +11,7 @@ body {
 
 .rsc-content {
     margin-top: 0;
-    height: calc(100vh - 80px);
+    height: calc(95vh - 80px);
 }
 
 .rsc-content .rsc-ts {
