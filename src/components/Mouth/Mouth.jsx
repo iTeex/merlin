@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { positive, negative } from './Tones';
+import { apologetic, descriptive, negative, positive } from './Tones';
 import { randomElement } from "../../utils";
 
 class Mouth extends Component {
@@ -15,10 +15,15 @@ class Mouth extends Component {
 
     componentDidMount() {
         switch (this.props.tone) {
-            case 'positive': this.setState({answer: randomElement(positive)});
-                break;
-            case 'negative': this.setState({answer: randomElement(negative)});
-                break;
+          case 'apologetic': this.setState({answer: randomElement(apologetic)});
+            break;
+          case 'descriptive': this.setState({answer: randomElement(descriptive)});
+            break;
+          case 'negative': this.setState({answer: randomElement(negative)});
+            break;
+          case 'positive': this.setState({answer: randomElement(positive)});
+            break;
+          default: this.setState({answer: randomElement(apologetic)});
         }
     }
 
@@ -33,9 +38,11 @@ class Mouth extends Component {
 export default Mouth;
 
 Mouth.propTypes = {
+    answer: PropTypes.string,
     tone: PropTypes.string
 };
 
 Mouth.defaultProps = {
+    answer: '',
     tone: undefined
 };

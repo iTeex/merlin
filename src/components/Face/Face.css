@@ -12,6 +12,9 @@ body {
 .rsc-content {
     margin-top: 0;
     height: calc(95vh - 80px);
+    overflow: auto;
+    padding-right: 20px;
+    width: 100%;
 }
 
 .rsc-content .rsc-ts {
@@ -37,6 +40,11 @@ body {
     background: transparent;
     font-size: 18px;
     color: #1cb4ff;
+}
+
+.rsc-footer {
+    width: 50%;
+    margin: auto;
 }
 
 .rsc-footer input {

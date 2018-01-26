@@ -11,16 +11,16 @@ class Weather extends Component {
 
         this.state = {
             loading: true,
+            answer: '',
             tone: ''
         };
     }
 
     componentWillMount() {
-        fetch('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props) + '&appid=01aea968f8f3cff49d0a33334e36f491')
+        fetch('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props.value) + '&appid=01aea968f8f3cff49d0a33334e36f491')
             .then(res => res.json())
             .then(res => {
                 if ("rain" in res) {
-                    console.log(res)
                     this.setState({tone: "positive", loading: false})
                 } else {
                     this.setState({tone: "negative", loading: false})
@@ -33,7 +33,7 @@ class Weather extends Component {
 
         return (
             <div>
-                { loading ? <Loading /> : <Mouth tone={this.state.tone}/> }
+                { loading ? <Loading /> : <Mouth tone={this.state.tone} answer={this.state.answer} /> }
             </div>
         );
     }
@@ -41,7 +41,7 @@ class Weather extends Component {
 export default Weather;
 
 Weather.propTypes = {
-    props: PropTypes.string
+    props: PropTypes.object
 };
 
 Weather.defaultProps = {

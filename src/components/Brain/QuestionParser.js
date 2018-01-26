@@ -9,10 +9,6 @@ const QuestionParser = {
                 'it': {
                     component: Time,
                     props: false
-                },
-                'it?': {
-                    component: Time,
-                    props: false
                 }
             }
         }
@@ -20,16 +16,10 @@ const QuestionParser = {
     'is': {
         'it': {
             'raining': {
-                component: Weather,
-                props: false,
                 'in': {
                     component: Weather,
                     props: true
                 }
-            },
-            'raining?': {
-                component: Weather,
-                props: false
             }
         }
     },

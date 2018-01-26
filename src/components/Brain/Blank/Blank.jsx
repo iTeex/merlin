@@ -1,9 +1,10 @@
 import React from 'react';
+import Mouth from '../../Mouth/Mouth';
 
 function Blank() {
     return (
         <div>
-            Sorry, I don't know how to help you...
+          <Mouth tone='apologetic' />
         </div>
     )
 }

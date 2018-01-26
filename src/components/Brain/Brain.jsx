@@ -16,36 +16,46 @@ class Brain extends Component {
         };
     }
 
-    getComponentFromQuestion() {
+    prepareRequest() {
+        // Set all words to lower case
         const lowerCaseRequest = this.props.steps.question.value.toLowerCase();
-        const splitRequest = lowerCaseRequest.split(' ');
-
-        const splitRequestLastItem = [...splitRequest].pop();
-        if (splitRequestLastItem.length === 1) {
+        // Remove punctuation (?)
+        const wordedRequest = lowerCaseRequest.replace(/\u003F/g, '');
+        // Turn sentence into parsable array
+        const splitRequest = wordedRequest.split(' ');
+        // If the last item is a trailing space, remove it
+        if ([...splitRequest].pop() === '') {
             splitRequest.pop();
         }
 
-        const parser = {...QuestionParser};
+        return splitRequest;
+    }
 
-        const result = this.parseRequest(parser, splitRequest);
+    getComponentFromQuestion() {
+        const request = this.prepareRequest();
+        const parser = {...QuestionParser};
+        const result = this.parseRequest(parser, request);
+
         if (result[1] === false) {
             this.setState({component: result[0]});
         } else {
             this.setState(
                 {
                     component: result[0],
-                    props: splitRequest.pop()
+                    props: {
+                        value: request.pop()
+                    }
                 }
             );
         }
     }
 
     parseRequest(parser, request) {
-        if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
-            return Blank;
+      if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
+            return [Blank];
         }
         if (Object.keys(parser)[0] === 'component' && request.length < 2) {
-            return [parser.component, parser.props];
+          return [parser.component, parser.props];
         } else {
             const key = Object.keys(parser).filter(key => key === request[0])[0];
             request.shift();

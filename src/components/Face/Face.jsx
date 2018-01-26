@@ -10,7 +10,7 @@ function Face() {
         <div>
             <ChatBot
                 placeholder=" "
-                width="50%"
+                width="100%"
                 botDelay="0"
                 customDelay="0"
                 userDelay="0"
