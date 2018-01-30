@@ -15,15 +15,15 @@ class Mouth extends Component {
 
     componentDidMount() {
         switch (this.props.tone) {
-          case 'apologetic': this.setState({answer: randomElement(apologetic)});
+          case 'apologetic': this.setState({answer: randomElement(apologetic) + this.props.answer});
             break;
-          case 'descriptive': this.setState({answer: randomElement(descriptive)});
+          case 'descriptive': this.setState({answer: randomElement(descriptive) + this.props.answer});
             break;
-          case 'negative': this.setState({answer: randomElement(negative)});
+          case 'negative': this.setState({answer: randomElement(negative) + this.props.answer});
             break;
-          case 'positive': this.setState({answer: randomElement(positive)});
+          case 'positive': this.setState({answer: randomElement(positive) + this.props.answer});
             break;
-          default: this.setState({answer: randomElement(apologetic)});
+          default: this.setState({answer: this.props.answer});
         }
     }
 

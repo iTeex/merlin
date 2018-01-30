@@ -43,7 +43,7 @@ body {
 }
 
 .rsc-footer {
-    width: 50%;
+    width: 30%;
     margin: auto;
 }
 
@@ -54,4 +54,10 @@ body {
     border-radius: 0;
     font-size: 18px;
     color: #fff;
+}
+
+@media(max-width: 768px) {
+    .rsc-footer {
+        width: 90%;
+    }
 }

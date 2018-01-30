@@ -39,12 +39,15 @@ class Brain extends Component {
         if (result[1] === false) {
             this.setState({component: result[0]});
         } else {
+            const props = result[1];
+            props.request = result[2];
+            if ('location' in result[1]) {
+              props.location = request.pop();
+            }
             this.setState(
                 {
                     component: result[0],
-                    props: {
-                        value: request.pop()
-                    }
+                    props: props
                 }
             );
         }
@@ -52,10 +55,10 @@ class Brain extends Component {
 
     parseRequest(parser, request) {
       if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
-            return [Blank];
+            return [Blank, {}, {}];
         }
-        if (Object.keys(parser)[0] === 'component' && request.length < 2) {
-          return [parser.component, parser.props];
+        if (Object.keys(parser)[0] === 'component' && Object.keys(parser).length === 2) {
+          return [parser.component, parser.props, request];
         } else {
             const key = Object.keys(parser).filter(key => key === request[0])[0];
             request.shift();
