@@ -1,9 +1,14 @@
+import Calculator from './Calculator/Calculator';
 import Open from './Open/Open';
 import Time from './Time/Time';
 import Translator from './Translator/Translator';
 import Weather from './Weather/Weather';
 
 const QuestionParser = {
+    'calculate': {
+      component: Calculator,
+      props: {}
+    },
     'how': {
         'do': {
             'you': {
