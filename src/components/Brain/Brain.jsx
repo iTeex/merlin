@@ -5,6 +5,8 @@ import QuestionParser from './QuestionParser';
 
 import Blank from './Blank/Blank'
 
+import { compareStrings } from '../../utils';
+
 class Brain extends Component {
     constructor(props) {
         super(props);
@@ -60,7 +62,7 @@ class Brain extends Component {
         if (Object.keys(parser)[0] === 'component' && Object.keys(parser).length === 2) {
           return [parser.component, parser.props, request];
         } else {
-            const key = Object.keys(parser).filter(key => key === request[0])[0];
+            const key = Object.keys(parser).filter(key => compareStrings(key, request[0]))[0];
             request.shift();
             return this.parseRequest(parser[key], request)
         }

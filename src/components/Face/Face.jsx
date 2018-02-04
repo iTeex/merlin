@@ -14,10 +14,10 @@ function Face() {
                 botDelay="0"
                 customDelay="0"
                 userDelay="0"
-                hideBotAvatar="true"
-                hideHeader="true"
-                hideUserAvatar="true"
-                hideSubmitButton="true"
+                hideBotAvatar={true}
+                hideHeader={true}
+                hideUserAvatar={true}
+                recognitionEnable={true}
                 steps={[
                     {
                         id: 'hello',
