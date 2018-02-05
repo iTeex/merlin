@@ -1,4 +1,5 @@
 import Calculator from './Calculator/Calculator';
+import Encyclopedia from './Encyclopedia/Encyclopedia';
 import Open from './Open/Open';
 import Time from './Time/Time';
 import Translator from './Translator/Translator';
@@ -64,6 +65,10 @@ const QuestionParser = {
                     props: false
                 }
             }
+        },
+        'is': {
+            component: Encyclopedia,
+            props: {}
         }
     },
 };

@@ -3,6 +3,10 @@
  * ********************** */
 
 export function compareStrings(str1, str2) {
+    if (str1 === str2) {
+        return true;
+    }
+
     let str1Sorted = str1.split("").sort().join(""),
         str2Sorted = str2.split("").sort().join("");
 

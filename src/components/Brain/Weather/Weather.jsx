@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 import { Loading } from 'react-simple-chatbot';
 
 import { ucfirst } from '../../../utils';
@@ -17,9 +18,8 @@ class Weather extends Component {
     }
 
     componentWillMount() {
-        fetch('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props.location) + '&appid=01aea968f8f3cff49d0a33334e36f491')
-            .then(res => res.json())
-            .then(res => this['setState' + this.props.props.value](res))
+        axios.get('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props.location) + '&appid=01aea968f8f3cff49d0a33334e36f491')
+            .then(res => this['setState' + this.props.props.value](res.data))
             .catch(error => console.log(error) | this.setState({loading: false, tone:'apologetic'}))
     }
 
