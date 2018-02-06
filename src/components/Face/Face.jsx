@@ -3,11 +3,19 @@ import ChatBot  from 'react-simple-chatbot';
 import React from 'react';
 
 import './Face.css';
+import './Squares.css';
 
 function Face() {
 
     return (
         <div>
+          <div className="big-square-1"></div>
+          <div className="big-square-2"></div>
+          <div className="big-square-3"></div>
+          <div className="little-square-1"></div>
+          <div className="little-square-2"></div>
+          <div className="little-square-3"></div>
+
             <ChatBot
                 placeholder=" "
                 width="100%"

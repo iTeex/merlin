@@ -13,6 +13,7 @@ class Mouth extends Component {
         };
     }
 
+
     componentDidMount() {
         switch (this.props.tone) {
           case 'apologetic': this.setState({answer: randomElement(apologetic) + this.props.answer});
@@ -28,9 +29,12 @@ class Mouth extends Component {
     }
 
     render() {
-        return (
+      const responsiveVoice = window.responsiveVoice;
+      responsiveVoice.speak(this.state.answer, "UK English Male", {pitch: 1, rate: 1.2});
+
+      return (
             <div>
-                { this.state.answer }
+              { this.state.answer }
             </div>
         );
     }

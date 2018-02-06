@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Loading } from 'react-simple-chatbot';
+
+import Mouth from '../../Mouth/Mouth';
 
 class Time extends Component {
     constructor(props) {
@@ -7,20 +10,24 @@ class Time extends Component {
 
         this.state = {
             dateNow: new Date(),
-            result: ''
+            loading: true,
+            answer: '',
+            tone: 'descriptive'
         };
     }
 
     componentWillMount() {
-        this.setState({result: this.state.dateNow.toTimeString()});
+        this.setState({answer: this.state.dateNow.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }), loading: false});
     }
 
     render() {
-        return (
-          <div>
-              It is { this.state.result }
-          </div>
-        );
+      const loading = this.state.loading;
+
+      return (
+        <div>
+          { loading ? <Loading /> : <Mouth tone={this.state.tone} answer={this.state.answer} /> }
+        </div>
+      );
     }
 }
 export default Time;

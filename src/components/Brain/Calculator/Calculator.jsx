@@ -22,7 +22,7 @@ class Calculator extends Component {
     const result = parser.parse(formula);
 
     switch(result.error) {
-      case null: this.setState({answer: result.result, loading: false});
+      case null: this.setState({answer: result.result.toString(), loading: false});
         break;
       case '#DIV/0!': this.setState({answer: 'Hmm sorry, I can\'t divide by zero...', loading: false});
         break;
