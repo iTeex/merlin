@@ -2,19 +2,25 @@ import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from 'react-simple-chatbot';
 import QuestionParser from './QuestionParser';
+import { connect } from "react-redux";
+import { updateRequestFull } from '../../actions';
 
 import Blank from './Blank/Blank'
 
 import { compareStrings } from '../../utils';
 
-class Brain extends Component {
+const mapDispatchToProps = dispatch => {
+  return {
+    updateRequest: request => dispatch(updateRequestFull(request)),
+  };
+};
+
+class ConnectedBrain extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            loading: true,
             component: Blank,
-            props: {}
         };
     }
 
@@ -38,21 +44,16 @@ class Brain extends Component {
         const parser = {...QuestionParser};
         const result = this.parseRequest(parser, request);
 
-        if (result[1] === false) {
-            this.setState({component: result[0]});
-        } else {
+        if (result[1] !== false) {
             const props = result[1];
             props.request = result[2];
             if ('location' in result[1]) {
               props.location = request.pop();
             }
-            this.setState(
-                {
-                    component: result[0],
-                    props: props
-                }
-            );
+            this.props.updateRequest(props)
         }
+
+        this.setState({component: result[0]});
     }
 
     parseRequest(parser, request) {
@@ -70,26 +71,22 @@ class Brain extends Component {
 
     componentWillMount() {
         this.getComponentFromQuestion();
-        this.setState({loading: false});
     }
 
     render() {
-        const loading = this.state.loading;
         const Result = this.state.component;
 
-        return (
-            <div>
-                { loading ? <Loading /> : <Result props={this.state.props} /> }
-            </div>
-        );
+        return <Result />;
     }
 }
+const Brain = connect(null, mapDispatchToProps)(ConnectedBrain);
+
 export default Brain;
 
-Brain.propTypes = {
+ConnectedBrain.propTypes = {
     steps: PropTypes.object
 };
 
-Brain.defaultProps = {
+ConnectedBrain.defaultProps = {
     steps: undefined
 };

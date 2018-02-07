@@ -2,61 +2,70 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Loading } from 'react-simple-chatbot';
+import { connect } from "react-redux";
+import { updateLoadingStatus, updateAnswerFull, updateAnswerTone } from '../../../actions';
 
 import { ucfirst } from '../../../utils';
 import Mouth from '../../Mouth/Mouth';
 
-class Weather extends Component {
+const mapStateToProps = state => {
+  return {
+    loading: state.loading.loading,
+    location: state.request.location,
+    value: state.request.value
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateLoadingStatus: loading => dispatch(updateLoadingStatus(loading)),
+    updateAnswer: answer => dispatch(updateAnswerFull(answer)),
+    updateTone: tone => dispatch(updateAnswerTone(tone)),
+  };
+};
+
+class ConnectedWeather extends Component {
     constructor(props) {
         super(props);
-
-        this.state = {
-            loading: true,
-            answer: '',
-            tone: ''
-        };
     }
 
-    componentWillMount() {
-        axios.get('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.props.location) + '&appid=01aea968f8f3cff49d0a33334e36f491')
-            .then(res => this['setState' + this.props.props.value](res.data))
-            .catch(error => console.log(error) | this.setState({loading: false, tone:'apologetic'}))
+    componentDidMount() {
+        axios.get('http://api.openweathermap.org/data/2.5/weather?units=metric&q=' + ucfirst(this.props.location) + '&appid=01aea968f8f3cff49d0a33334e36f491')
+            .then(res => this['setState' + this.props.value](res.data))
+            .catch(error => console.log(error) | this.setState({tone:'apologetic'}))
     }
 
     render() {
-        const loading = this.state.loading;
-
-        return (
-            <div>
-                { loading ? <Loading /> : <Mouth tone={this.state.tone} answer={this.state.answer} /> }
-            </div>
-        );
+      return <Mouth />
     }
 
-    // Set State methods
+    /* Set State methods */
 
     setStateRain(fetchRes) {
         if ("rain" in fetchRes) {
-            this.setState({tone: "positive", loading: false})
+            this.props.updateTone("positive")
         } else {
-            this.setState({tone: "negative", loading: false})
+            this.props.updateTone("negative")
         }
     }
 
     setStateCold(fetchRes) {
-        this.setState({tone: "descriptive", loading: false, answer: fetchRes.main.temp + '°C'})
+        this.props.updateAnswer({tone: "descriptive", answer: fetchRes.main.temp + '°C'})
     }
 
     setStateHot(fetchRes) {
-        this.setState({tone: "descriptive", loading: false, answer: fetchRes.main.temp + '°C'})
+        this.props.updateAnswer({tone: "descriptive", answer: fetchRes.main.temp + '°C'})
     }
 }
+
+const Weather = connect(mapStateToProps, mapDispatchToProps)(ConnectedWeather);
+
 export default Weather;
 
-Weather.propTypes = {
+ConnectedWeather.propTypes = {
     props: PropTypes.object
 };
 
-Weather.defaultProps = {
+ConnectedWeather.defaultProps = {
     props: undefined
 };

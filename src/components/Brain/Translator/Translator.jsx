@@ -2,11 +2,16 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Loading } from 'react-simple-chatbot';
+import { connect } from "react-redux";
 
 import Mouth from '../../Mouth/Mouth';
 import { ucfirst } from '../../../utils';
 
-class Translator extends Component {
+const mapStateToProps = state => {
+  return { location: state.request.location };
+};
+
+class ConnectedTranslator extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +33,7 @@ class Translator extends Component {
   }
 
   prepJsonObject() {
-    const targetLanguage = ucfirst(this.props.props.location);
+    const targetLanguage = ucfirst(this.props.location);
     this.props.props.request.pop();
     const textToTranslate = this.props.props.request.join(' ');
 
@@ -49,12 +54,15 @@ class Translator extends Component {
     );
   }
 }
+
+const Translator = connect(mapStateToProps)(ConnectedTranslator);
+
 export default Translator;
 
-Translator.propTypes = {
+ConnectedTranslator.propTypes = {
   props: PropTypes.object
 };
 
-Translator.defaultProps = {
+ConnectedTranslator.defaultProps = {
   props: undefined
 };

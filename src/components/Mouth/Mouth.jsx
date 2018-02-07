@@ -1,10 +1,29 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Loading } from 'react-simple-chatbot';
+
+import { connect } from 'react-redux';
+
+import { updateLoadingStatus } from '../../actions';
 
 import { apologetic, descriptive, negative, positive } from './Tones';
 import { randomElement } from "../../utils";
 
-class Mouth extends Component {
+const mapStateToProps = state => {
+  return {
+    loading: state.loading.loading,
+    answer: state.answer.answer,
+    tone: state.answer.tone,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateLoadingStatus: loading => dispatch(updateLoadingStatus(loading)),
+  };
+};
+
+class ConnectedMouth extends Component {
     constructor(props) {
         super(props);
 
@@ -26,27 +45,33 @@ class Mouth extends Component {
             break;
           default: this.setState({answer: this.props.answer});
         }
+      this.props.updateLoadingStatus(false);
     }
 
     render() {
       const responsiveVoice = window.responsiveVoice;
       responsiveVoice.speak(this.state.answer, "UK English Male", {pitch: 1, rate: 1.2});
 
+      const loading = this.props.loading;
+
       return (
             <div>
-              { this.state.answer }
+              { loading ? <Loading /> : this.state.answer }
             </div>
         );
     }
 }
+
+const Mouth = connect(mapStateToProps, mapDispatchToProps)(ConnectedMouth);
+
 export default Mouth;
 
-Mouth.propTypes = {
+ConnectedMouth.propTypes = {
     answer: PropTypes.string,
     tone: PropTypes.string
 };
 
-Mouth.defaultProps = {
+ConnectedMouth.defaultProps = {
     answer: '',
     tone: undefined
 };
