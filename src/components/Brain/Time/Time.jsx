@@ -1,23 +1,30 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Loading } from 'react-simple-chatbot';
+import { updateAnswerFull } from '../../../actions';
+import { connect } from "react-redux";
 
 import Mouth from '../../Mouth/Mouth';
 
-class Time extends Component {
+const mapDispatchToProps = dispatch => {
+    return {
+        updateAnswer: answer => dispatch(updateAnswerFull(answer)),
+    };
+};
+
+class TimeConnected extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
             dateNow: new Date(),
             loading: true,
-            answer: '',
-            tone: 'descriptive'
         };
     }
 
-    componentWillMount() {
-        this.setState({answer: this.state.dateNow.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }), loading: false});
+    componentDidMount() {
+        this.props.updateAnswer({answer: this.state.dateNow.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true }), tone: 'descriptive'});
+        this.setState({loading: false});
     }
 
     render() {
@@ -25,18 +32,19 @@ class Time extends Component {
 
       return (
         <div>
-          { loading ? <Loading /> : <Mouth tone={this.state.tone} answer={this.state.answer} /> }
+          { loading ? <Loading /> : <Mouth /> }
         </div>
       );
     }
 }
+const Time = connect(() => {} , mapDispatchToProps)(TimeConnected)
+
 export default Time;
 
-
-Time.propTypes = {
+TimeConnected.propTypes = {
     props: PropTypes.object
 };
 
-Time.defaultProps = {
+TimeConnected.defaultProps = {
     props: undefined
 };

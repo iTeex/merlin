@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { Loading } from 'react-simple-chatbot';
 import QuestionParser from './QuestionParser';
 import { connect } from "react-redux";
 import { updateRequestFull } from '../../actions';

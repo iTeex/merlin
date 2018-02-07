@@ -4,23 +4,23 @@ import { Loading } from 'react-simple-chatbot';
 
 import { connect } from 'react-redux';
 
-import { updateLoadingStatus } from '../../actions';
+import Speak from './Speak'
 
 import { apologetic, descriptive, negative, positive } from './Tones';
 import { randomElement } from "../../utils";
+import { updateAnswer } from '../../actions';
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading.loading,
     answer: state.answer.answer,
     tone: state.answer.tone,
   }
 };
 
 const mapDispatchToProps = dispatch => {
-  return {
-    updateLoadingStatus: loading => dispatch(updateLoadingStatus(loading)),
-  };
+    return {
+        updateAnswer: answer => dispatch(updateAnswer(answer)),
+    };
 };
 
 class ConnectedMouth extends Component {
@@ -28,35 +28,38 @@ class ConnectedMouth extends Component {
         super(props);
 
         this.state = {
-            answer: ''
+            loading: true
         };
     }
 
-
     componentDidMount() {
         switch (this.props.tone) {
-          case 'apologetic': this.setState({answer: randomElement(apologetic) + this.props.answer});
-            break;
-          case 'descriptive': this.setState({answer: randomElement(descriptive) + this.props.answer});
-            break;
-          case 'negative': this.setState({answer: randomElement(negative) + this.props.answer});
-            break;
-          case 'positive': this.setState({answer: randomElement(positive) + this.props.answer});
-            break;
-          default: this.setState({answer: this.props.answer});
+            case 'apologetic':
+                this.props.updateAnswer(randomElement(apologetic) + this.props.answer);
+                this.setState({loading: false});
+                break;
+            case 'descriptive':
+                this.props.updateAnswer(randomElement(descriptive) + this.props.answer);
+                console.log(randomElement(descriptive) + this.props.answer)
+                this.setState({loading: false});
+                break;
+            case 'negative':
+                this.props.updateAnswer(randomElement(negative) + this.props.answer);
+                this.setState({loading: false});
+                break;
+            case 'positive':
+                this.props.updateAnswer(randomElement(positive) + this.props.answer);
+                this.setState({loading: false});
+                break;
         }
-      this.props.updateLoadingStatus(false);
     }
 
     render() {
-      const responsiveVoice = window.responsiveVoice;
-      responsiveVoice.speak(this.state.answer, "UK English Male", {pitch: 1, rate: 1.2});
+        const loading = this.state.loading;
 
-      const loading = this.props.loading;
-
-      return (
+        return (
             <div>
-              { loading ? <Loading /> : this.state.answer }
+                { loading ? <Loading /> : <Speak /> }
             </div>
         );
     }
