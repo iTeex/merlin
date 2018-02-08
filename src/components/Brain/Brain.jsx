@@ -1,25 +1,22 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import QuestionParser from './QuestionParser';
-import { connect } from "react-redux";
-import { updateRequestFull } from '../../actions';
+import Mouth from '../Mouth/Mouth';
+import { Loading } from 'react-simple-chatbot';
 
 import Blank from './Blank/Blank'
 
 import { compareStrings } from '../../utils';
 
-const mapDispatchToProps = dispatch => {
-  return {
-    updateRequest: request => dispatch(updateRequestFull(request)),
-  };
-};
-
-class ConnectedBrain extends Component {
+class Brain extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            component: Blank,
+            loading: true,
+            response: {},
+            request: '',
+            component: Blank
         };
     }
 
@@ -39,53 +36,74 @@ class ConnectedBrain extends Component {
     }
 
     getComponentFromQuestion() {
-        const request = this.prepareRequest();
-        const parser = {...QuestionParser};
-        const result = this.parseRequest(parser, request);
+      const request = this.prepareRequest();
+      const parser = {...QuestionParser};
+      const result = this.parseRequest(parser, request);
 
-        if (result[1] !== false) {
-            const props = result[1];
-            props.request = result[2];
-            if ('location' in result[1]) {
-              props.location = request.pop();
-            }
-            this.props.updateRequest(props)
+      if (result[1] !== false) {
+        const props = result[1];
+        props.request = result[2];
+        if ('location' in result[1]) {
+          props.location = request.pop();
         }
-
-        this.setState({component: result[0]});
+        result[0](props).then(response => this.setStateFromValues(response))
+      } else {
+        result[0]().then(response => this.setStateFromValues(response))
+      }
     }
+
+    setStateFromValues = (response, loading = false, request = this.props.steps.question.value) => {
+      this.setState({
+        response: response,
+        loading: loading,
+        request: request
+      })
+    };
 
     parseRequest(parser, request) {
       if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
-            return [Blank, {}, {}];
-        }
-        if (Object.keys(parser)[0] === 'component' && Object.keys(parser).length === 2) {
-          return [parser.component, parser.props, request];
-        } else {
-            const key = Object.keys(parser).filter(key => compareStrings(key, request[0]))[0];
-            request.shift();
-            return this.parseRequest(parser[key], request)
-        }
+        return [Blank, {}, {}];
+      }
+      if (Object.keys(parser)[0] === 'knowledge' && Object.keys(parser).length === 2) {
+        return [parser.knowledge, parser.props, request];
+      } else {
+        const key = Object.keys(parser).filter(key => compareStrings(key, request[0]))[0];
+        request.shift();
+        return this.parseRequest(parser[key], request)
+      }
     }
 
-    componentWillMount() {
-        this.getComponentFromQuestion();
+    componentDidMount() {
+      this.getComponentFromQuestion();
+    }
+
+    componentDidUpdate() {
+      if (!this.state.loading) {
+        this.setState({loading: true})
+      }
+    }
+
+    shouldComponentUpdate() {
+      return this.state.loading;
     }
 
     render() {
-        const Result = this.state.component;
+      const loading = this.state.loading;
+      const response = this.state.response;
 
-        return <Result />;
+      return (
+        <div>
+          { loading ? <Loading /> : <Mouth response={response}/> }
+        </div>
+      );
     }
 }
-const Brain = connect(null, mapDispatchToProps)(ConnectedBrain);
-
 export default Brain;
 
-ConnectedBrain.propTypes = {
+Brain.propTypes = {
     steps: PropTypes.object
 };
 
-ConnectedBrain.defaultProps = {
+Brain.defaultProps = {
     steps: undefined
 };

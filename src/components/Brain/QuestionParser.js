@@ -1,20 +1,21 @@
-import Calculator from './Calculator/Calculator';
-import Encyclopedia from './Encyclopedia/Encyclopedia';
+import { Calculator } from './Knowledge/Calculator';
+import { Encyclopedia } from './Knowledge/Encyclopedia';
 import Open from './Open/Open';
-import Time from './Time/Time';
-import Translator from './Translator/Translator';
-import Weather from './Weather/Weather';
+import { Puppy } from './Knowledge/Puppy';
+import { Time } from './Knowledge/Time';
+import { Translator } from './Knowledge/Translator';
+import { Weather } from './Knowledge/Weather';
 
 const QuestionParser = {
     'calculate': {
-      component: Calculator,
+      knowledge: Calculator,
       props: {}
     },
     'how': {
         'do': {
             'you': {
                 'say': {
-                    component: Translator,
+                    knowledge: Translator,
                     props: {
                         location: '',
                     }
@@ -26,28 +27,28 @@ const QuestionParser = {
         'it': {
             'raining': {
                 'in': {
-                    component: Weather,
+                    knowledge: Weather,
                     props: {
                         location: '',
-                        value: 'Rain'
+                        value: 'rain'
                     }
                 }
             },
             'cold': {
                 'in': {
-                    component: Weather,
+                    knowledge: Weather,
                     props: {
                       location: '',
-                      value: 'Cold'
+                      value: 'cold'
                     }
                 }
             },
             'hot': {
                 'in': {
-                    component: Weather,
+                    knowledge: Weather,
                     props: {
                       location: '',
-                      value: 'Hot'
+                      value: 'hot'
                     }
                 }
             }
@@ -57,17 +58,31 @@ const QuestionParser = {
         component: Open,
         props: true
     },
+    'search': {
+      knowledge: Encyclopedia,
+      props: {}
+    },
+    'show': {
+      'me': {
+        'a': {
+          'puppy': {
+            knowledge: Puppy,
+            props: false
+          }
+        }
+      }
+    },
     'what': {
         'time': {
             'is': {
                 'it': {
-                    component: Time,
+                    knowledge: Time,
                     props: false
                 }
             }
         },
         'is': {
-            component: Encyclopedia,
+            knowledge: Encyclopedia,
             props: {}
         }
     },
