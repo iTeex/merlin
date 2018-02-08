@@ -1,6 +1,6 @@
 export const Puppy = () => {
-  let proxyUrl = 'https://cors-anywhere.herokuapp.com/',
-    targetUrl = 'https://api.thedogapi.co.uk/v2/dog.php?limit=1)'
+  const proxyUrl = 'https://cors-anywhere.herokuapp.com/',
+    targetUrl = 'https://api.thedogapi.co.uk/v2/dog.php?limit=1';
 
   function setAnswer(data) {
     const response = {

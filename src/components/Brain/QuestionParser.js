@@ -1,7 +1,9 @@
 import { Calculator } from './Knowledge/Calculator';
 import { Encyclopedia } from './Knowledge/Encyclopedia';
+import { Joke } from './Knowledge/Joke';
 import Open from './Open/Open';
 import { Puppy } from './Knowledge/Puppy';
+import { Sun } from './Knowledge/Sun';
 import { Time } from './Knowledge/Time';
 import { Translator } from './Knowledge/Translator';
 import { Weather } from './Knowledge/Weather';
@@ -72,6 +74,16 @@ const QuestionParser = {
         }
       }
     },
+    'tell': {
+      'me': {
+        'a': {
+          'joke': {
+            knowledge: Joke,
+            props: false
+          }
+        }
+      }
+    },
     'what': {
         'time': {
             'is': {
@@ -84,6 +96,26 @@ const QuestionParser = {
         'is': {
             knowledge: Encyclopedia,
             props: {}
+        }
+    },
+    'when': {
+        'will': {
+            'the': {
+                'sun': {
+                    'set': {
+                        knowledge: Sun,
+                        props: {
+                            value: 'set'
+                        }
+                    },
+                    'rise': {
+                        knowledge: Sun,
+                        props: {
+                            value: 'rise'
+                        }
+                    }
+                }
+            }
         }
     },
 };

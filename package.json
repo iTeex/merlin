@@ -8,8 +8,7 @@
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-scripts": "1.1.0",
-    "react-simple-chatbot": "^0.2.9",
-    "twilio": "^3.11.2"
+    "react-simple-chatbot": "^0.2.9"
   },
   "scripts": {
     "start": "react-scripts start",

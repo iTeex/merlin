@@ -37,14 +37,20 @@ class Mouth extends Component {
         if (this.props.response.image === true) {
           return (
             <div className='img-container'>
-              <img src={answer.answer} />
+              <img src={answer.answer} alt='' />
             </div>
           );
         } else {
           const responsiveVoice = window.responsiveVoice;
-          responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1.2});
+          responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1});
 
-          return <span> { answer.answer } </span>
+          return (
+              <span>
+                  { answer.answer.split('\n').map((item, key) => {
+                      return <span key={key}>{item}<br/></span>
+                  }) }
+              </span>
+          )
         }
     }
 }
