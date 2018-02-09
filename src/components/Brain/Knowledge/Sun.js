@@ -1,30 +1,48 @@
 export const Sun = (props) => {
-    const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+  const proxyUrl = 'https://cors-anywhere.herokuapp.com/';
+  const date = props.date === 'today' ? 'today' : setDate();
+  let targetUrl = '';
 
-    let targetUrl = '';
+  function setDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.getFullYear() + '-' + formatMonth(d.getMonth()) + '-' + d.getDate();
+  }
 
-    navigator.geolocation.getCurrentPosition(createPromise);
+  function formatMonth(month) {
+    let formattedMonth = month + 1;
 
-    function setAnswer(data) {
-        let answer = '';
-        if (props.value === 'rise') {
-            answer = 'The sun will rise at ' + data.results.sunrise;
-        } else {
-            answer = 'The sun will set at ' + data.results.sunset;
-        }
+    return formattedMonth < 10 ? '0' + month : month;
+  }
 
-        const response = {
-            answer: answer
-        };
+  const getPosition = (options) => {
+    return new Promise(function (resolve, reject) {
+      navigator.geolocation.getCurrentPosition(resolve, reject, options);
+    });
+  };
 
-        return Promise.resolve(response)
-    }
-
-    function createPromise(position) {
-        targetUrl = 'https://api.sunrise-sunset.org/json?lat='+ position.coords.latitude +'&lng='+ position.coords.longitude;
-    }
-
+  const getSunInfo = (position) => {
+    targetUrl = 'https://api.sunrise-sunset.org/json?lat='+ position.coords.latitude +'&lng='+ position.coords.longitude +'&date='+date;
     return fetch(proxyUrl + targetUrl)
-        .then(res => res.json())
-        .then(res => setAnswer(res))
+      .then(res => res.json())
+  };
+
+  const setAnswer = (data) => {
+    let answer = '';
+    if (props.value === 'rise') {
+      answer = 'The sun will rise at ' + data.results.sunrise;
+    } else {
+      answer = 'The sun will set at ' + data.results.sunset;
+    }
+
+    const response = {
+      answer: answer
+    };
+
+    return Promise.resolve(response)
+  };
+
+  return getPosition()
+    .then(position => getSunInfo(position))
+    .then(res => setAnswer(res))
 };

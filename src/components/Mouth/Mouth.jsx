@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { apologetic, descriptive, negative, positive } from './Tones';
+import { apologetic, descriptive, delivering, negative, positive } from './Tones';
 import { randomElement } from "../../utils";
 
 class Mouth extends Component {
@@ -17,6 +17,9 @@ class Mouth extends Component {
         switch (this.props.response.tone) {
             case 'apologetic':
                 this.setState({answer: randomElement(apologetic) + this.props.response.answer});
+                break;
+            case 'delivering':
+                this.setState({answer: randomElement(delivering) + this.props.response.answer});
                 break;
             case 'descriptive':
                 this.setState({answer: randomElement(descriptive) + this.props.response.answer});
@@ -41,8 +44,11 @@ class Mouth extends Component {
             </div>
           );
         } else {
-          const responsiveVoice = window.responsiveVoice;
-          responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1});
+          console.log(this.props)
+          if (this.props.response.speak === true) {
+            const responsiveVoice = window.responsiveVoice;
+            responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1});
+          }
 
           return (
               <span>
@@ -60,7 +66,8 @@ Mouth.propTypes = {
   response: PropTypes.shape({
     answer: PropTypes.string.isRequired,
     tone: PropTypes.string,
-    image: PropTypes.boolean
+    image: PropTypes.boolean,
+    speak: PropTypes.boolean
   })
 };
 
@@ -68,6 +75,7 @@ Mouth.defaultProps = {
   response: {
     answer: '',
     tone: '',
-    image: false
+    image: false,
+    speak: true
   }
 };

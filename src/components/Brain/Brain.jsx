@@ -4,106 +4,105 @@ import QuestionParser from './QuestionParser';
 import Mouth from '../Mouth/Mouth';
 import { Loading } from 'react-simple-chatbot';
 
-import Blank from './Blank/Blank'
-
 import { compareStrings } from '../../utils';
 
 class Brain extends Component {
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            loading: true,
-            response: {},
-            request: '',
-            component: Blank
-        };
-    }
-
-    prepareRequest() {
-        // Set all words to lower case
-        const lowerCaseRequest = this.props.steps.question.value.toLowerCase();
-        // Remove punctuation (?)
-        const wordedRequest = lowerCaseRequest.replace(/\u003F/g, '');
-        // Turn sentence into parsable array
-        const splitRequest = wordedRequest.split(' ');
-        // If the last item is a trailing space, remove it
-        if ([...splitRequest].pop() === '') {
-            splitRequest.pop();
-        }
-
-        return splitRequest;
-    }
-
-    getComponentFromQuestion() {
-      const request = this.prepareRequest();
-      const parser = {...QuestionParser};
-      const result = this.parseRequest(parser, request);
-
-      if (result[1] !== false) {
-        const props = result[1];
-        props.request = result[2];
-        if ('location' in result[1]) {
-          props.location = request.pop();
-        }
-        result[0](props).then(response => this.setStateFromValues(response))
-      } else {
-        result[0]().then(response => this.setStateFromValues(response))
-      }
-    }
-
-    setStateFromValues = (response, loading = false, request = this.props.steps.question.value) => {
-      this.setState({
-        response: response,
-        loading: loading,
-        request: request
-      })
+    this.state = {
+      loading: true,
+      response: {},
+      request: ''
     };
+  }
 
-    parseRequest(parser, request) {
-      if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
-        return [Blank, {}, {}];
+  prepareRequest() {
+    // Set all words to lower case
+    const lowerCaseRequest = this.props.steps.question.value.toLowerCase();
+    // Remove punctuation (?)
+    const wordedRequest = lowerCaseRequest.replace(/\u003F/g, '');
+    // Turn sentence into parsable array
+    const splitRequest = wordedRequest.split(' ');
+    // If the last item is a trailing space, remove it
+    if ([...splitRequest].pop() === '') {
+        splitRequest.pop();
+    }
+
+    return splitRequest;
+  }
+
+  getComponentFromQuestion() {
+    const request = this.prepareRequest();
+    const parser = {...QuestionParser};
+    const result = this.parseRequest(parser, request);
+
+    if (result.length === 0) {
+      this.setStateFromValues({answer: '', tone: 'apologetic'})
+    } else if (result[1] !== false) {
+      const props = result[1];
+      props.request = result[2];
+      if ('location' in result[1]) {
+        props.location = request.pop();
       }
-      if (Object.keys(parser)[0] === 'knowledge' && Object.keys(parser).length === 2) {
-        return [parser.knowledge, parser.props, request];
-      } else {
-        const key = Object.keys(parser).filter(key => compareStrings(key, request[0]))[0];
-        request.shift();
-        return this.parseRequest(parser[key], request)
-      }
+      result[0](props).then(response => this.setStateFromValues(response))
+    } else {
+      result[0]().then(response => this.setStateFromValues(response))
     }
+  }
 
-    componentDidMount() {
-      this.getComponentFromQuestion();
+  setStateFromValues = (response, loading = false, request = this.props.steps.question.value) => {
+    this.setState({
+      response: response,
+      loading: loading,
+      request: request
+    })
+  };
+
+  parseRequest(parser, request) {
+    if (typeof parser === 'undefined' || Object.keys(parser).length === 0) {
+      return [];
     }
-
-    componentDidUpdate() {
-      if (!this.state.loading) {
-        this.setState({loading: true})
-      }
+    if (Object.keys(parser)[0] === 'knowledge' && (Object.keys(parser).length === 2 || request.length === 0)) {
+      return [parser.knowledge, parser.props, request];
+    } else {
+      const key = Object.keys(parser).filter(key => compareStrings(key, request[0]))[0];
+      request.shift();
+      return this.parseRequest(parser[key], request)
     }
+  }
 
-    shouldComponentUpdate() {
-      return this.state.loading;
+  componentDidMount() {
+    this.getComponentFromQuestion();
+  }
+
+  componentDidUpdate() {
+    if (!this.state.loading) {
+      this.setState({loading: true})
     }
+  }
 
-    render() {
-      const loading = this.state.loading;
-      const response = this.state.response;
+  shouldComponentUpdate() {
+    return this.state.loading;
+  }
 
-      return (
-        <div>
-          { loading ? <Loading /> : <Mouth response={response}/> }
-        </div>
-      );
-    }
+  render() {
+    const loading = this.state.loading;
+    const response = this.state.response;
+
+    return (
+      <div>
+        { loading ? <Loading /> : <Mouth response={response}/> }
+      </div>
+    );
+  }
 }
 export default Brain;
 
 Brain.propTypes = {
-    steps: PropTypes.object
+  steps: PropTypes.object
 };
 
 Brain.defaultProps = {
-    steps: undefined
+  steps: undefined
 };
