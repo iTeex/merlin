@@ -3,7 +3,8 @@ export const Open = (props) => {
 
   const answer = {
     answer: '',
-    tone: 'delivering'
+    tone: 'delivering',
+    speak: true
   };
 
   return Promise.resolve(answer)

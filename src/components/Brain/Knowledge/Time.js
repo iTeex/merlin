@@ -12,7 +12,8 @@ export const Time = () => {
 
   const answer = {
     answer: dateRequested,
-    tone: 'descriptive'
+    tone: 'descriptive',
+    speak: true
   };
 
   return Promise.resolve(answer)

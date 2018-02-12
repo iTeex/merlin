@@ -14,7 +14,8 @@ export const Translator = (props) => {
 
   function setAnswer(data) {
     const response = {
-      answer: data
+      answer: data,
+      speak: true
     };
 
     return Promise.resolve(response)

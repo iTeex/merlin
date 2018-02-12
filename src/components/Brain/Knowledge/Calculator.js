@@ -6,7 +6,8 @@ export const Calculator = (props) => {
   const result = parser.parse(formula);
   const response = {
     answer: '',
-    tone: ''
+    tone: '',
+    speak: true
   };
 
   switch(result.error) {

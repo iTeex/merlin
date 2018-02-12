@@ -5,7 +5,8 @@ export const Puppy = () => {
   function setAnswer(data) {
     const response = {
       answer: data.data[0].url,
-      image: true
+      image: true,
+      speak: false
     };
 
     return Promise.resolve(response)

@@ -6,7 +6,8 @@ export const Encyclopedia = (props) => {
 
   function setAnswer(data) {
     const response = {
-      answer: data[2][0]
+      answer: data[2][0],
+      speak: false
     };
 
     return Promise.resolve(response)

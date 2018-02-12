@@ -6,7 +6,8 @@ export const Joke = () => {
         const answer = data.setup + '\n' + data.punchline;
 
         const response = {
-            answer: answer
+            answer: answer,
+            speak: true
         };
 
         return Promise.resolve(response)

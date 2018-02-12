@@ -36,7 +36,8 @@ export const Sun = (props) => {
     }
 
     const response = {
-      answer: answer
+      answer: answer,
+      speak: true
     };
 
     return Promise.resolve(response)

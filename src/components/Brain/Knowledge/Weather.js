@@ -4,7 +4,8 @@ import { ucfirst } from '../../../utils';
 export const Weather = (props) => {
   const response = {
     answer: '',
-    tone: ''
+    tone: '',
+    speak: true
   };
 
   function rain(fetchRes) {
@@ -17,8 +18,8 @@ export const Weather = (props) => {
   }
 
   function giveTemperature(fetchRes) {
-    response.tone = 'descriptive'
-    response.answer = fetchRes.main.temp + '°C'
+    response.tone = 'descriptive';
+    response.answer = fetchRes.main.temp + '°C';
     return Promise.resolve(response);
   }
 
