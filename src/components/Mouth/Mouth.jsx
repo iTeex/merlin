@@ -44,7 +44,6 @@ class Mouth extends Component {
             </div>
           );
         } else {
-          console.log(this.props)
           if (this.props.response.speak === true) {
             const responsiveVoice = window.responsiveVoice;
             responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1});
@@ -66,8 +65,8 @@ Mouth.propTypes = {
   response: PropTypes.shape({
     answer: PropTypes.string.isRequired,
     tone: PropTypes.string,
-    image: PropTypes.boolean,
-    speak: PropTypes.boolean
+    image: PropTypes.bool,
+    speak: PropTypes.bool
   })
 };
 
