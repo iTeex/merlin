@@ -4,56 +4,56 @@ body {
 }
 
 .rsc-container {
-    background: transparent;
-    border-radius: 0;
-    margin: 10px auto;
+    background: transparent!important;
+    border-radius: 0!important;
+    margin: 10px auto!important;
 }
 
 .rsc-content {
     margin-top: 0;
-    height: calc(95vh - 80px);
-    overflow: auto;
-    padding-right: 20px;
-    width: 100%;
+    height: calc(95vh - 80px)!important;
+    overflow: auto!important;
+    padding-right: 20px!important;
+    width: 100%!important;
 }
 
 .rsc-content .rsc-ts {
-    justify-content: center;
-    align-items: center;
+    justify-content: center!important;
+    align-items: center!important;
 }
 
 .rsc-content .rsc-ts .rsc-ts-image-container {
-    display: none;
+    display: none!important;
 }
 
 .rsc-content .rsc-ts .rsc-ts-bubble {
-    background: transparent;
-    font-size: 18px;
-    color: #fff;
+    background: transparent!important;
+    font-size: 18px!important;
+    color: #fff!important;
 }
 
 .rsc-content .rsc-ts:nth-child(odd) .rsc-ts-bubble {
-    color: #1cb4ff;
+    color: #1cb4ff!important;
 }
 
 .rsc-content .rsc-cs {
-    background: transparent;
-    font-size: 18px;
-    color: #1cb4ff;
+    background: transparent!important;
+    font-size: 18px!important;
+    color: #1cb4ff!important;
 }
 
 .rsc-footer {
-    width: 30%;
-    margin: auto;
+    width: 30%!important;
+    margin: auto!important;
 }
 
 .rsc-footer input {
-    background: transparent;
-    border-top: 0;
-    border-bottom: 1px solid #eee;
-    border-radius: 0;
-    font-size: 18px;
-    color: #fff;
+    background: transparent!important;
+    border-top: 0!important;
+    border-bottom: 1px solid #eee!important;
+    border-radius: 0!important;
+    font-size: 18px!important;
+    color: #fff!important;
 }
 
 .img-container {
@@ -67,6 +67,6 @@ body {
 
 @media(max-width: 768px) {
     .rsc-footer {
-        width: 90%;
+        width: 90%!important;
     }
 }
