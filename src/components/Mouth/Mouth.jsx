@@ -1,80 +1,80 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Loading } from 'react-simple-chatbot';
 
-import { connect } from 'react-redux';
-
-import Speak from './Speak'
-
-import { apologetic, descriptive, negative, positive } from './Tones';
+import { apologetic, descriptive, delivering, negative, positive } from './Tones';
 import { randomElement } from "../../utils";
-import { updateAnswer } from '../../actions';
 
-const mapStateToProps = state => {
-  return {
-    answer: state.answer.answer,
-    tone: state.answer.tone,
-  }
-};
-
-const mapDispatchToProps = dispatch => {
-    return {
-        updateAnswer: answer => dispatch(updateAnswer(answer)),
-    };
-};
-
-class ConnectedMouth extends Component {
+class Mouth extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            loading: true
+          answer: ''
         };
     }
 
     componentDidMount() {
-        switch (this.props.tone) {
+        switch (this.props.response.tone) {
             case 'apologetic':
-                this.props.updateAnswer(randomElement(apologetic) + this.props.answer);
-                this.setState({loading: false});
+                this.setState({answer: randomElement(apologetic) + this.props.response.answer});
+                break;
+            case 'delivering':
+                this.setState({answer: randomElement(delivering) + this.props.response.answer});
                 break;
             case 'descriptive':
-                this.props.updateAnswer(randomElement(descriptive) + this.props.answer);
-                console.log(randomElement(descriptive) + this.props.answer)
-                this.setState({loading: false});
+                this.setState({answer: randomElement(descriptive) + this.props.response.answer});
                 break;
             case 'negative':
-                this.props.updateAnswer(randomElement(negative) + this.props.answer);
-                this.setState({loading: false});
+                this.setState({answer: randomElement(negative) + this.props.response.answer});
                 break;
             case 'positive':
-                this.props.updateAnswer(randomElement(positive) + this.props.answer);
-                this.setState({loading: false});
+                this.setState({answer: randomElement(positive) + this.props.response.answer});
                 break;
+          default: this.setState({answer: this.props.response.answer});
         }
     }
 
     render() {
-        const loading = this.state.loading;
+        const answer = {...this.state};
 
-        return (
-            <div>
-                { loading ? <Loading /> : <Speak /> }
+        if (this.props.response.image === true) {
+          return (
+            <div className='img-container'>
+              <img src={answer.answer} alt='' />
             </div>
-        );
+          );
+        } else {
+          console.log(this.props)
+          if (this.props.response.speak === true) {
+            const responsiveVoice = window.responsiveVoice;
+            responsiveVoice.speak(answer.answer, "UK English Male", {pitch: 1, rate: 1});
+          }
+
+          return (
+              <span>
+                  { answer.answer.split('\n').map((item, key) => {
+                      return <span key={key}>{item}<br/></span>
+                  }) }
+              </span>
+          )
+        }
     }
 }
-
-const Mouth = connect(mapStateToProps, mapDispatchToProps)(ConnectedMouth);
-
 export default Mouth;
 
-ConnectedMouth.propTypes = {
-    answer: PropTypes.string,
-    tone: PropTypes.string
+Mouth.propTypes = {
+  response: PropTypes.shape({
+    answer: PropTypes.string.isRequired,
+    tone: PropTypes.string,
+    image: PropTypes.boolean,
+    speak: PropTypes.boolean
+  })
 };
 
-ConnectedMouth.defaultProps = {
-    answer: '',
-    tone: undefined
+Mouth.defaultProps = {
+  response: {
+    tone: '',
+    image: false,
+    speak: true
+  }
 };
