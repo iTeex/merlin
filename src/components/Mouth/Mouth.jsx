@@ -73,7 +73,6 @@ Mouth.propTypes = {
 
 Mouth.defaultProps = {
   response: {
-    answer: '',
     tone: '',
     image: false,
     speak: true

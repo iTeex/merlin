@@ -1,8 +1,10 @@
 import { Calculator } from './Knowledge/Calculator';
+import { DataFinder } from './Knowledge/DataFinder';
 import { Encyclopedia } from './Knowledge/Encyclopedia';
 import { Joke } from './Knowledge/Joke';
 import { Lyrics } from './Knowledge/Lyrics';
 import { Open } from './Knowledge/Open';
+import { Phone } from './Knowledge/Phone';
 import { Puppy } from './Knowledge/Puppy';
 import { Sports } from './Knowledge/Sports';
 import { Sun } from './Knowledge/Sun';
@@ -12,6 +14,10 @@ import { Weather } from './Knowledge/Weather';
 
 const calculate = {
   knowledge: Calculator,
+  props: {}
+};
+const call = {
+  knowledge: Phone,
   props: {}
 };
 const get = {
@@ -139,6 +145,18 @@ const what = {
       }
     }
   },
+  'can': {
+    'you': {
+      'tell': {
+        'me': {
+          'about': {
+            knowledge: DataFinder,
+            props: {}
+          }
+        }
+      }
+    }
+  },
   'is': {
     knowledge: Encyclopedia,
     props: {}
@@ -191,6 +209,7 @@ const when = {
 
 const QuestionParser = {
   calculate,
+  call,
   get,
   how,
   is,
